@@ -2,7 +2,7 @@
 
   <arg name="enable_logging" default="false"/>
   <arg name="enable_ground_truth" default="true"/>
-  <arg name="paused" value="false"/>
+  <arg name="paused" value="true"/>
   <param name='coverage_planner_names' type='str' value='Axel'/>
 
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
@@ -29,13 +29,13 @@
     </node>
     <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
     <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
-    <node name='coverage_planner' pkg='quad_control' type='coverage_planner.py' output='screen'/>
+    <node name='coverage_planner' pkg='multi_agent_coverage_planner' type='coverage_planner.py' output='screen'/>
     <param name='name' type='str' value='Axel'/>
     <param name='others_names' type='str' value='Bo'/>
     <param name='token' type='bool' value='true'/>
-    <node name='coverage_router' pkg='quad_control' type='coverage_router.py' output='screen'/>
-    <!--node name="planner" pkg="quad_control" type="rotors_to_goal_planner_node.py" output="screen"/-->
-    <!--node name="rotors_planner_node" pkg="quad_control_antonio" type="rotors_point_sequence_planner_node.py" output="screen"/-->
+    <node name='coverage_router' pkg='multi_agent_coverage_planner' type='coverage_router.py' output='screen'/>
+    <!--node name="planner" pkg="multi_agent_coverage_planner" type="rotors_to_goal_planner_node.py" output="screen"/-->
+    <!--node name="rotors_planner_node" pkg="multi_agent_coverage_planner_antonio" type="rotors_point_sequence_planner_node.py" output="screen"/-->
     <!--node name="waypoint_publisher" pkg="rotors_gazebo" type="waypoint_publisher" output="screen" args="-1 -1 1 0 5"/-->
   </group>
   
@@ -57,17 +57,17 @@
     </node>
     <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
     <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
-    <node name='coverage_planner' pkg='quad_control' type='coverage_planner.py' output='screen'/>
+    <node name='coverage_planner' pkg='multi_agent_coverage_planner' type='coverage_planner.py' output='screen'/>
     <param name='name' type='str' value='Bo'/>
     <param name='others_names' type='str' value='Axel'/>
     <param name='token' type='bool' value='false'/>
-    <node name='coverage_router' pkg='quad_control' type='coverage_router.py' output='screen'/>
-    <!--node name="planner" pkg="quad_control" type="rotors_to_goal_planner_node.py" output="screen"/-->
-    <!--node name="rotors_planner_node" pkg="quad_control_antonio" type="rotors_point_sequence_planner_node.py" output="screen"/-->
+    <node name='coverage_router' pkg='multi_agent_coverage_planner' type='coverage_router.py' output='screen'/>
+    <!--node name="planner" pkg="multi_agent_coverage_planner" type="rotors_to_goal_planner_node.py" output="screen"/-->
+    <!--node name="rotors_planner_node" pkg="multi_agent_coverage_planner_antonio" type="rotors_point_sequence_planner_node.py" output="screen"/-->
     <!--node name="waypoint_publisher" pkg="rotors_gazebo" type="waypoint_publisher" output="screen" args="-1 -1 1 0 5"/-->
   </group>
   
-  <node name='coverage_plotter' pkg='quad_control' type='coverage_plotter.py' output='screen'/>
+  <node name='coverage_plotter' pkg='multi_agent_coverage_planner' type='coverage_plotter.py' output='screen'/>
   <!--node name='rqt_plot' pkg='rqt_plot' type='rqt_plot'/-->
   
 </launch>

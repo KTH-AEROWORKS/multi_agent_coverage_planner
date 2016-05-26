@@ -24,7 +24,7 @@ __OTHERS_NAMES = rp.get_param('others_names').split()
 __TOLERANCE = 0.05
 __SAFETY = 0.1
 __MAX_SPEED = 0.3
-__GAIN = 0.08
+__GAIN = 0.02
 
 __INITIAL_POSE = cov.INITIAL_POSES[__NAME]
 __INITIAL_LANDMARKS = cov.INITIAL_LANDMARKS_LISTS[__NAME]
@@ -156,24 +156,26 @@ def __work():
     global __initial_time
     __lock.acquire()
     dot_p = __GAIN*__agent.position_coverage_gradient()
+    dot_theta = __GAIN*__agent.orientation_coverage_gradient()
     pos = np.array(__agent.get_pose())[0:2]
-    if __BOUNDARY_FUNCTION(pos)<0.0 and __BOUNDARY_FUNCTION_GRADIENT(pos).dot(dot_p)<0.0:
-        pass
+    #if __BOUNDARY_FUNCTION(pos)<0.0 and __BOUNDARY_FUNCTION_GRADIENT(pos).dot(dot_p)<0.0:
+        #dot_p = np.zeros(2)
+        #dot_theta = 0.0
         #rp.logwarn(__NAME + ': Emergency! Out of boundary!: ' + str(pos))
         #dot_p = cov.remove_parallel_component(dot_p, __BOUNDARY_FUNCTION_GRADIENT(pos))
         #dot_p += __BOUNDARY_FUNCTION_GRADIENT(pos)/np.linalg.norm(__BOUNDARY_FUNCTION_GRADIENT(pos))*np.linalg.norm(dot_p)
         #dot_p = cov.remove_parallel_component(dot_p, __BOUNDARY_FUNCTION_GRADIENT(pos))
         #dot_p = __GAIN*__BOUNDARY_FUNCTION_GRADIENT(pos)
-    elif __BOUNDARY_FUNCTION(pos)<=__SAFETY and __BOUNDARY_FUNCTION_GRADIENT(pos).dot(dot_p)<0.0:
-        pass
+    #elif __BOUNDARY_FUNCTION(pos)<=__SAFETY and __BOUNDARY_FUNCTION_GRADIENT(pos).dot(dot_p)<0.0:
         #dot_p -= (__SAFETY-__BOUNDARY_FUNCTION(pos))*cov.projection(dot_p, __BOUNDARY_FUNCTION_GRADIENT(pos)) 
         #dot_p = __GAIN*(dot_p*__BOUNDARY_FUNCTION(pos) + (__SAFETY-__BOUNDARY_FUNCTION(pos))*__BOUNDARY_FUNCTION_GRADIENT(pos))
         #dot_p -= (__SAFETY-__BOUNDARY_FUNCTION(pos))/__SAFETY*cov.projection(dot_p, __BOUNDARY_FUNCTION_GRADIENT(pos))
-        #dot_p += (__SAFETY-__BOUNDARY_FUNCTION(pos))/__SAFETY*__BOUNDARY_FUNCTION_GRADIENT(pos)/np.linalg.norm(__BOUNDARY_FUNCTION_GRADIENT(pos))*np.linalg.norm(dot_p) + (__SAFETY - __BOUNDARY_FUNCTION(pos))*__BOUNDARY_FUNCTION_GRADIENT(pos)
-    dot_theta = __GAIN*__agent.orientation_coverage_gradient()
+        #dot_p += __BOUNDARY_FUNCTION_GRADIENT(pos)/np.linalg.norm(__BOUNDARY_FUNCTION_GRADIENT(pos))*np.linalg.norm(dot_p)
     vel = np.array([dot_p[0], dot_p[1], dot_theta])
     if np.linalg.norm(vel)>__MAX_SPEED:
         vel = vel/np.linalg.norm(vel)*__MAX_SPEED
+    #if np.linalg.norm(vel) < __TOLERANCE:
+        #vel = np.zeros(3)    
     __cov_pub.publish(__agent.coverage())
     cmd_vel = gms.Pose2D(*vel)
     __cmd_vel_pub.publish(cmd_vel)

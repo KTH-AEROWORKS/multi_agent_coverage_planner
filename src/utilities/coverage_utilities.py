@@ -20,7 +20,7 @@ TOLERANCE = 0.005
 NUM_LANDMARKS = 400
 DOMAIN_SIZE = 2.5
 
-__OPTIMAL_DISTANCE = 0.8
+__OPTIMAL_DISTANCE = 0.5
 __sq = np.sqrt(NUM_LANDMARKS)
 
 
@@ -325,8 +325,8 @@ class Agent:
 LANDMARKS = []
 
 for index in range(NUM_LANDMARKS):
-    x = float(index//__sq)/__sq*2.0*DOMAIN_SIZE-DOMAIN_SIZE+DOMAIN_SIZE/__sq
-    y = float(np.mod(index, __sq))/__sq*2.0*DOMAIN_SIZE-DOMAIN_SIZE+DOMAIN_SIZE/__sq
+    x = 0.4*(float(index//__sq)/__sq*2.0*DOMAIN_SIZE-DOMAIN_SIZE+DOMAIN_SIZE/__sq)
+    y = 0.4*(float(np.mod(index, __sq))/__sq*2.0*DOMAIN_SIZE-DOMAIN_SIZE+DOMAIN_SIZE/__sq)
     #x = 0.5*DOMAIN_SIZE*np.cos(2*np.pi*index/NUM_LANDMARKS)
     #y = 0.5*DOMAIN_SIZE*np.sin(2*np.pi*index/NUM_LANDMARKS)
     LANDMARKS.append(Landmark(x, y))
@@ -344,8 +344,8 @@ for lmk in LANDMARKS:
     INITIAL_LANDMARKS_LISTS[name].append(lmk)
     
 INITIAL_POSES = {}
-INITIAL_POSES['Axel'] = (-2.0, 2.0, 0.0)
-INITIAL_POSES['Bo'] = (-2.0, -2.0, 0.0)
+INITIAL_POSES['Axel'] = (0.0, 2.0, 0.0)
+INITIAL_POSES['Bo'] = (0.0, -2.0, 0.0)
 INITIAL_POSES['Calle'] = (0.0, 0.0, 0.0)
 INITIAL_POSES['David'] = (0.0, 0.0, 2*np.pi/3)
 INITIAL_POSES['Emil'] = (0.0, 0.0, -2*np.pi/3)
@@ -356,8 +356,8 @@ INITIAL_POSES['Emil'] = (0.0, 0.0, -2*np.pi/3)
 
 
 __BOUNDARIES = {}
-__BOUNDARIES['Axel'] = ((-2.5,-2.5), (0.5, 2.5))
-__BOUNDARIES['Bo'] = ((-2.5, 2.5), (-2.5, -0.5))
+__BOUNDARIES['Axel'] = ((-2.5,-2.5), (1.0, 2.5))
+__BOUNDARIES['Bo'] = ((-2.5, 2.5), (-2.5, -1.0))
 __BOUNDARIES['Calle'] = ((-2.5, 2.5), (-2.5, 2.5))
 __BOUNDARIES['David'] = ((-2.5, 2.5), (-2.5, 2.5))
 __BOUNDARIES['Emil'] = ((-2.5, 2.5), (-2.5, 2.5))
